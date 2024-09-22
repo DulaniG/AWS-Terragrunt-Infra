@@ -20,6 +20,7 @@ jobs:
       Terragrunt_version: 0.53.2
       Working_Directory: envs/dev
       AWS_region: us-east-1
+      Action: format
 
   plan:
     name: Terraform plan
@@ -31,6 +32,7 @@ jobs:
       Terragrunt_version: 0.53.2
       Working_Directory: envs/dev
       AWS_region: us-east-1
+      Action: plan
 
   deploy:
     name: Terraform apply
@@ -41,3 +43,4 @@ jobs:
       Terragrunt_version: 0.53.2
       Working_Directory: envs/dev
       AWS_region: us-east-1
+      Action: apply
