@@ -14,7 +14,7 @@ jobs:
   checks:
     name: Terraform checks
     if: ${{ github.event.pull_request.merged == false }}
-    uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
+    uses: https://github.com/DulaniG/Reusable-workflows.git/.github/workflows/terragrunt.yaml@main
     with:
       Terraform_version: 1.5.7
       Terragrunt_version: 0.53.2
@@ -24,7 +24,7 @@ jobs:
   plan:
     name: Terraform plan
     if: ${{ github.event.pull_request.merged == false }}
-    uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
+    uses: https://github.com/DulaniG/Reusable-workflows.git/.github/workflows/terragrunt.yaml@main
     needs: [ checks ]
     with:
       Terraform_version: 1.5.7
@@ -35,7 +35,7 @@ jobs:
   deploy:
     name: Terraform apply
     if: ${{ github.event.pull_request.merged == true }}
-    uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
+    uses: https://github.com/DulaniG/Reusable-workflows.git/.github/workflows/terragrunt.yaml@main
     with:
       Terraform_version: 1.5.7
       Terragrunt_version: 0.53.2
