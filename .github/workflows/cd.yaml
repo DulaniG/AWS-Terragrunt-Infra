@@ -10,69 +10,34 @@ on:
       branches:
         - main
 
-env:
-  tf_version: '1.5.7'
-  tg_version: '0.53.2'
-  working_dir: 'envs/dev'
-
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    name: Terraform checks
     if: ${{ github.event.pull_request.merged == false }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-
-      - name: Check terragrunt HCL
-        uses: gruntwork-io/terragrunt-action@v2
-        with:
-          tf_version: ${{ env.tf_version }}
-          tg_version: ${{ env.tg_version }}
-          tg_dir: ${{ env.working_dir }}
-          tg_command: 'hclfmt --terragrunt-check --terragrunt-diff'
+    uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
+    with:
+      Terraform_version: 1.5.7
+      Terragrunt_version: 0.53.2
+      Working_Directory: envs/dev
+      AWS_region: us-east-1
 
   plan:
-    runs-on: ubuntu-latest
-    needs: [ checks ]
+    name: Terraform plan
     if: ${{ github.event.pull_request.merged == false }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Plan
-        uses: gruntwork-io/terragrunt-action@v2
-        with:
-          tf_version: ${{ env.tf_version }}
-          tg_version: ${{ env.tg_version }}
-          tg_dir: ${{ env.working_dir }}
-          tg_command: 'plan'
+    uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
+    needs: [ checks ]
+    with:
+      Terraform_version: 1.5.7
+      Terragrunt_version: 0.53.2
+      Working_Directory: envs/dev
+      AWS_region: us-east-1
 
   deploy:
-    runs-on: ubuntu-latest
-    environment: 'dev'
+    name: Terraform apply
     if: ${{ github.event.pull_request.merged == true }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Deploy
-        uses: gruntwork-io/terragrunt-action@v2
-        with:
-          tf_version: ${{ env.tf_version }}
-          tg_version: ${{ env.tg_version }}
-          tg_dir: ${{ env.working_dir }}
-          tg_command: 'apply'
+    uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
+    with:
+      Terraform_version: 1.5.7
+      Terragrunt_version: 0.53.2
+      Working_Directory: envs/dev
+      AWS_region: us-east-1
