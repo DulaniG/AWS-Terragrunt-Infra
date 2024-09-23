@@ -12,6 +12,8 @@ on:
 
 jobs:
   checks:
+    permissions:
+      id-token: write
     name: Terraform checks
     if: ${{ github.event.pull_request.merged == false }}
     uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
@@ -23,6 +25,8 @@ jobs:
       Action: format
 
   plan:
+    permissions:
+        id-token: write
     name: Terraform plan
     if: ${{ github.event.pull_request.merged == false }}
     uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
@@ -35,6 +39,8 @@ jobs:
       Action: plan
 
   deploy:
+    permissions:
+        id-token: write
     name: Terraform apply
     if: ${{ github.event.pull_request.merged == true }}
     uses: DulaniG/Reusable-workflows/.github/workflows/terragrunt.yaml@main
@@ -44,4 +50,3 @@ jobs:
       Working_Directory: envs/dev
       AWS_region: us-east-1
       Action: apply
-      
